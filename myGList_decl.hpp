@@ -11,67 +11,70 @@ template<typename T>
 class GListNode {
 	public:
 		// 判断是否为元素
-		virtual bool isElemnt() const = 0;
-
-		// = 重载，赋值常量值
-		virtual GListNode& operator=(const T& val) const;
-
-		// = 重载， 赋值对应类型
-		virtual GListNode& operator=(const GListNode& other) const;
-
-		// << 重载，输出对应类型
-		virtual std::ostream operator<<(std::ostream os, const GListNode& node) const;
+		virtual bool isElement() const = 0;
 };
 
 // GList 元素类
 template<typename T>
-class GListElemnt : public GListNode {
+class GListElement : public GListNode<T> {
 	private:
 		T elem;
 	public:
-		GListElemnt() {}
-		GListElemnt(const T val) { elem = val; }
-		~GListElemnt() {}
+		GListElement() {}
+		GListElement(const T val)  { elem = val; }
+		GListElement(const GListElement<T>& other) { elem = other.data(); }
+		~GListElement() {}
 
-		bool isElemnt() const override;
+		bool isElement() const override;
 
 		// 获取数据
 		const T data() const;
 
 		// = 重载， 赋值常量值
-		GListElemnt<T>& operator=(const T val) const override;
+		GListElement<T>& operator=(const T val);
 
 		// = 重载，赋值GListElement类型
-		GListElemnt<T>& operator=(const GListElemnt<T>& other) const override;
+		GListElement<T>& operator=(const GListElement<T>& other);
 
 		// << 重载，输出GListElement类型
-		std::ostream operator<<(std::ostream os, const GListElemnt<T>& element) const override;
+		friend std::ostream& operator<<(std::ostream& os, const GListElement<T>& element) {
+			os << element.data();
+			return os;	
+		}
 };
 
 // GList 广义表类
 template<typename T>
-class GList : public GListNode {
+class GList : public GListNode<T> {
 	private:
 		Array<GListNode<T>*>subList;
 	public:
 		GList() {}
-		GList(const GListNode& node);
+		GList(const GListNode<T>& node);
 		GList(const Array<GListNode<T>*>& array);
-		GList(const T& data);
+		GList(const Array<T>& array);
+		GList(std::initializer_list<GList<T>> val);
+		GList(const T val);
 		~GList() { 
 			subList.clear();
 		}
 
-		bool isElemnt() const override;
-
-		// 获取数据
-		Array<GListNode*>& data();
+		bool isElement() const override;
 
 		// 获取深度
 		size_t deepth();
 
 		// 获取长度
 		size_t size();
+
+		// 模糊类型插入
+		void push_back(GListNode<T>& node);
+
+		// 插入数组
+		void push_back(const Array<T>& array);
+
+		// 常量值插入
+		void push_back(const T val);
 
 		// 删除对应下标的表
 		void erase(int idx);
@@ -80,19 +83,35 @@ class GList : public GListNode {
 		void clear();
 
 		// = 重载，赋值常量值
-		GList& operator=(const T val) const override;
+		GList& operator=(const T val);
 
 		// = 重载，赋值GlistNode类型
-		GList& operator=(const GListNode& node) const override;
+		GList& operator=(const GListNode<T>& node);
 
 		// << 重载，输出广义表
-		std::ostream operator<<(std::ostream, const GListNode& node) const override;
+		friend std::ostream& operator<<(std::ostream& os, const GList<T>& list) {
+			os << "(";
+
+			int flag = 0;
+			for (GListNode<T>* x : list.subList) {
+				os << ((flag) ? ",": "");
+				if ( x -> isElement() ) {
+					os << *(dynamic_cast<GListElement<T>*>(x));
+				}
+				else {
+					os << *(dynamic_cast<GList<T>*>(x));
+				}
+				flag = 1;
+			}
+			os << ")";
+			return os;
+		}
 
 		// [] 重载，查询第idx个表
-		GListNode& operator[](const int idx);
+		GListNode<T>& operator[](const int idx);
 	private:
 		// 获取subList
-		Array<GListNode<T>*>& getSubList() const;
+		const Array<GListNode<T>*>& getSubList() const;
 };
 
 

@@ -142,7 +142,8 @@ Array<T>& Array<T>::operator=(const Array<T>& other) {
 		for (const auto &x : other) {
 			data[idx ++] = x;
 		}
-	}	
+	}
+	return *this;	
 }
 
 //
