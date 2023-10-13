@@ -352,31 +352,28 @@ const Array<GListNode<T>*>& GList<T>::getSubList() const {
 //
 template<typename T>
 size_t GList<T>::bfs(GList<T>* list, int layer) {
-	size_t deep = 0;
-	Queue<GListNode<T>*>q, qN;
+	size_t deep = (subList.size() != 0);
+	Queue< Array<GListNode<T>*> >q, qN;
 	
 	if ( !subList.size() ) return 0;
 
-	q.push(subList[0]);
-
+	q.push(subList);
 	while ( !q.empty() ) {
-		GListNode<T>* tmp = q.front();
+		Array<GListNode<T>*> tmp = q.front();
 		q.pop();
 
-		if ( !(tmp -> isElement()) ) {
-			GList<T>* ttmp = dynamic_cast<GList<T>*>(tmp);
-			for (GListNode<T>* x : ttmp -> getSubList()) {
-				if ( !(x -> isElement()) ) { 
-					qN.push(x);
+		for (GListNode<T>* &x : tmp) {
+			if ( !(x -> isElement()) ) {
+				GList<T>* ttmp = dynamic_cast<GList<T>*>(x);
+				qN.push(ttmp -> getSubList());
+			}
 
-					if ( list != nullptr && layer != MY_NOT_LIMIT ) {
-						if (deep == layer) { 
-							list -> push_back(*x);
-						}
-						else if ( deep > layer ) {
-							return deep;
-						}
-					}
+			if ( list != nullptr && layer != MY_NOT_LIMIT ) {
+				if ( deep == layer ) {
+					list -> push_back(*x);
+				}
+				else if ( deep > layer ) {
+					return deep;
 				}
 			}
 		}

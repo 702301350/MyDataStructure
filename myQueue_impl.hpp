@@ -67,6 +67,7 @@ bool Queue<T>::empty() {
 template<typename T>
 Queue<T>& Queue<T>::operator=(const Queue<T>& other) {
 	data = other.data;
+	return *this;
 }
 
 //
@@ -77,6 +78,7 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& other) {
 template<typename T>
 const Queue<T>& Queue<T>::operator=(const Queue<T>& other) const {
 	data = other.data;
+	return *this;
 }
 
 #endif
