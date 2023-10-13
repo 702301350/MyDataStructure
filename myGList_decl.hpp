@@ -3,6 +3,7 @@
 
 #include "myDef.hpp"
 #include "myArray.hpp"
+#include "myQueue.hpp"
 
 #include <iostream>
 
@@ -35,12 +36,6 @@ class GListElement : public GListNode<T> {
 
 		// = 重载，赋值GListElement类型
 		GListElement<T>& operator=(const GListElement<T>& other);
-
-		// << 重载，输出GListElement类型
-		friend std::ostream& operator<<(std::ostream& os, const GListElement<T>& element) {
-			os << element.data();
-			return os;	
-		}
 };
 
 // GList 广义表类
@@ -65,7 +60,7 @@ class GList : public GListNode<T> {
 		size_t deepth();
 
 		// 获取长度
-		size_t size();
+		const size_t size() const;
 
 		// 模糊类型插入
 		void push_back(GListNode<T>& node);
@@ -82,37 +77,31 @@ class GList : public GListNode<T> {
 		// 清空广义表
 		void clear();
 
+		// 获取表中第一个元素
+		const GListNode<T>& front() const;
+
+		// 获取特定层数的所有广义表
+		GList<T> at(int layer);
+
 		// = 重载，赋值常量值
 		GList& operator=(const T val);
 
 		// = 重载，赋值GlistNode类型
 		GList& operator=(const GListNode<T>& node);
 
-		// << 重载，输出广义表
-		friend std::ostream& operator<<(std::ostream& os, const GList<T>& list) {
-			os << "(";
+		//[] 重载，查询第idx个表
+		GListNode<T>& operator[](int idx);
 
-			int flag = 0;
-			for (GListNode<T>* x : list.subList) {
-				os << ((flag) ? ",": "");
-				if ( x -> isElement() ) {
-					os << *(dynamic_cast<GListElement<T>*>(x));
-				}
-				else {
-					os << *(dynamic_cast<GList<T>*>(x));
-				}
-				flag = 1;
-			}
-			os << ")";
-			return os;
-		}
-
-		// [] 重载，查询第idx个表
-		GListNode<T>& operator[](const int idx);
+		// [] 重载，查询第idx个表 常量
+		const GListNode<T>& operator[](int idx) const;
 	private:
 		// 获取subList
 		const Array<GListNode<T>*>& getSubList() const;
+
+		// DFS
+		size_t bfs(GList<T>* list, int layer);
 };
+
 
 
 #endif

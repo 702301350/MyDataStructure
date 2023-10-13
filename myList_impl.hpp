@@ -80,6 +80,16 @@ T& List<T>::operator[](int idx) {
 }
 
 //
+// [] 重载
+//
+// @oaram idx 查找下标 常量
+//
+template<typename T>
+const T& List<T>::operator[](int idx) const {
+	return find(idx) -> data;
+}
+
+//
 // erase 删除函数
 //
 // @param idx 删除下标

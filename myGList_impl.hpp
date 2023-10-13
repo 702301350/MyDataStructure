@@ -5,6 +5,42 @@
 
 //
 //
+//***********************************GListNode******************************************//
+
+//
+// 输出全局函数 
+//
+// @param os 输出流     node GListNode类型
+//
+template<typename T>
+std::ostream& operator<<(std::ostream& os,const GListNode<T>& node) {
+	if ( node.isElement() ) {
+		const GListElement<T>& element = dynamic_cast<const GListElement<T>&>(node);
+		os << element.data();
+	}
+	else {
+		const GList<T>& list = dynamic_cast<const GList<T>&>(node);
+
+		os << "(";
+
+		int flag = 0, len = list.size();
+		for (int i = 0; i < len; i ++) {
+			os << ((flag) ? ",": "");
+			if ( list[i].isElement() ) {
+				os << dynamic_cast<const GListElement<T>&>(list[i]);
+			}
+			else {
+				os << dynamic_cast<const GList<T>&>(list[i]);
+			}
+			flag = 1;
+		}
+		os << ")";
+	}
+	return os;
+}
+
+//
+//
 //***********************************GListElement******************************************//
 
 //
@@ -76,8 +112,7 @@ GList<T>::GList(const GListNode<T>& node) {
 //
 template<typename T>
 GList<T>::GList(const T val) {
-	GListElement<T>* tmp = new GListElement<T>(val);
-	subList.push_back(tmp);
+	subList.push_back(new GListElement<T>(val));
 }
 
 //
@@ -108,8 +143,14 @@ GList<T>::GList(const Array<T>& array) {
 //
 template<typename T>
 GList<T>::GList(std::initializer_list<GList<T>> val) {
-	for (const auto &x : val) {
-		subList.push_back(new GList<T>(x));
+	for (const GList<T>& x : val) {
+		if ( x.size() == 1 && x.front().isElement() ) {
+			T y = dynamic_cast<const GListElement<T>&>(x.front()).data();
+			subList.push_back(new GListElement<T>(y));
+		}
+		else {
+			subList.push_back(new GList<T>(x));
+		}
 	}
 }
 
@@ -151,7 +192,26 @@ GList<T>& GList<T>::operator=(const T val) {
 // @param idx 查询下标
 //
 template<typename T>
-GListNode<T>& GList<T>::operator[](const int idx) {
+GListNode<T>& GList<T>::operator[](int idx) {
+	if ( idx < 0 || idx >= subList.size() ) {
+		throw std::out_of_range("[GList]: Idx Out Of Range!\n");
+	}
+
+	if ( subList[idx] -> isElement() ) {
+		return *dynamic_cast<GListElement<T>*>(subList[idx]);
+	}
+	else{
+		return *dynamic_cast<GList<T>*>(subList[idx]);
+	}
+}
+
+//
+// [] 重载 查询第idx个广义表 常量
+//
+// @param idx 查询下标
+//
+template<typename T>
+const GListNode<T>& GList<T>::operator[](int idx) const {
 	if ( idx < 0 || idx >= subList.size() ) {
 		throw std::out_of_range("[GList]: Idx Out Of Range!\n");
 	}
@@ -235,10 +295,36 @@ void GList<T>::clear() {
 }
 
 //
+// front 获取表内第一个元素
+//
+template<typename T>
+const GListNode<T>& GList<T>::front() const {
+	GListNode<T>* tmp = subList[0];
+	if ( tmp -> isElement() ) {
+		return *dynamic_cast<GListElement<T>*>(tmp);
+	}
+	else {
+		return *dynamic_cast<GList<T>*>(tmp);
+	}
+}
+
+//
+// at 获取第layer层的所有广义表
+//
+// @param layer 指定层
+//
+template<typename T>
+GList<T> GList<T>::at(int layer) {
+	GList<T> tmp;
+	bfs(&tmp, layer);
+	return tmp;
+}
+
+//
 // size 获取广义表的大小
 //
 template<typename T>
-size_t GList<T>::size() {
+const size_t GList<T>::size() const {
 	return subList.size();
 }
 
@@ -248,7 +334,7 @@ size_t GList<T>::size() {
 //!
 template<typename T>
 size_t GList<T>::deepth() {
-	return 0;
+	return bfs(nullptr, MY_NOT_LIMIT);
 }
 
 //
@@ -257,6 +343,52 @@ size_t GList<T>::deepth() {
 template<typename T>
 const Array<GListNode<T>*>& GList<T>::getSubList() const {
 	return subList;
+}
+
+//
+// bfs 深度搜索
+//
+// @param list 搜索得到的广义表       layer 搜索的层数
+//
+template<typename T>
+size_t GList<T>::bfs(GList<T>* list, int layer) {
+	size_t deep = 0;
+	Queue<GListNode<T>*>q, qN;
+	
+	if ( !subList.size() ) return 0;
+
+	q.push(subList[0]);
+
+	while ( !q.empty() ) {
+		GListNode<T>* tmp = q.front();
+		q.pop();
+
+		if ( !(tmp -> isElement()) ) {
+			GList<T>* ttmp = dynamic_cast<GList<T>*>(tmp);
+			for (GListNode<T>* x : ttmp -> getSubList()) {
+				if ( !(x -> isElement()) ) { 
+					qN.push(x);
+
+					if ( list != nullptr && layer != MY_NOT_LIMIT ) {
+						if (deep == layer) { 
+							list -> push_back(*x);
+						}
+						else if ( deep > layer ) {
+							return deep;
+						}
+					}
+				}
+			}
+		}
+
+		if ( !qN.empty() && q.empty() ) {
+			q = qN;
+			qN.clear();
+			deep ++;
+		}  
+	}
+
+	return deep;	
 }
 
 #endif

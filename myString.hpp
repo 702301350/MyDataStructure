@@ -17,7 +17,7 @@ class String {
 		String(const char* str = nullptr);
 		String(const String& str);
 		String(String&& str);
-		~String(); 
+		~String();
 
 		// =重载
 		String& operator=(const String& str);
@@ -57,6 +57,9 @@ class String {
 
 		// []重载，查询第idx个元素
 		char& operator[](int idx);
+
+		// []重载，查询第idx个元素 常量
+		const char& operator[](int idx) const;
 
 		// 清空字符串
 		void clear();

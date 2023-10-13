@@ -22,50 +22,53 @@ class Array {
 			clear();
 		}
 
-		// åˆ é™¤ä¸‹æ ‡ä¸ºidxçš„å…ƒç´ 
+		// É¾³ıÏÂ±êÎªidxµÄÔªËØ
 		void erase(int idx);
 
-		// æŒ‰ç…§è¿­ä»£å™¨åˆ é™¤
+		// °´ÕÕµü´úÆ÷É¾³ı
 		void erase(iterator it);
 
-		// [] é‡è½½, è¿”å›ä¸‹æ ‡ä¸ºidxçš„å…ƒç´ 
+		// [] ÖØÔØ, ·µ»ØÏÂ±êÎªidxµÄÔªËØ
 		T& operator[](int idx);
 
-		// = é‡è½½, èµ‹å€¼
+		// [] ÖØÔØ£¬·µ»ØÏÂ±êÎªidxµÄÔªËØ³£Á¿
+		const T& operator[](int idx) const;
+
+		// = ÖØÔØ, ¸³Öµ
 		Array<T>& operator=(const Array<T>& other);
 
-		// è¿”å›æœ€åä¸€ä¸ªå…ƒç´ å€¼
+		// ·µ»Ø×îºóÒ»¸öÔªËØÖµ
 		T& back();
 
-		// æ’å…¥å…ƒç´ åˆ°å°¾éƒ¨
+		// ²åÈëÔªËØµ½Î²²¿
 		void push_back(T val);
 
-		// æ’å…¥å…ƒç´ åˆ°ä¸‹æ ‡ä¸ºidxçš„ä½ç½®
+		// ²åÈëÔªËØµ½ÏÂ±êÎªidxµÄÎ»ÖÃ
 		void insert(T val, int idx);
 
-		// è·å–æ•°ç»„å¤§å°
+		// »ñÈ¡Êı×é´óĞ¡
 		const size_t size() const;
 
-		// è¿”å›æ•°ç»„æ˜¯å¦ä¸ºç©º
+		// ·µ»ØÊı×éÊÇ·ñÎª¿Õ
 		bool empty();
 
-		// æ¸…ç©ºæ•°ç»„
+		// Çå¿ÕÊı×é
 		void clear();
 
-		// å¤´éƒ¨è¿­ä»£å™¨
+		// Í·²¿µü´úÆ÷
 		iterator begin();
 
-		// å°¾éƒ¨è¿­ä»£å™¨
+		// Î²²¿µü´úÆ÷
 		iterator end();
 
-		// å¤´éƒ¨å¸¸é‡è¿­ä»£å™¨
+		// Í·²¿³£Á¿µü´úÆ÷
 		const_iterator begin() const;
 
-		// å°¾éƒ¨å¸¸é‡è¿­ä»£å™¨
+		// Î²²¿³£Á¿µü´úÆ÷
 		const_iterator end() const;
 
 	private:
-		// è·å–data
+		// »ñÈ¡data
 		T* getData();
 };
 

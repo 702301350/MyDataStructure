@@ -44,11 +44,39 @@ const T& Queue<T>::front() {
 }
 
 //
+// clear 清除队列
+//
+template<typename T>
+void Queue<T>::clear() {
+	data.clear();
+}
+
+//
 // empty 获取队列是否为空状态
 //
 template<typename T>
 bool Queue<T>::empty() {
 	return data.empty();
+}
+
+//
+// = 重载, 赋值
+//
+// @param other 提供赋值的变量
+//
+template<typename T>
+Queue<T>& Queue<T>::operator=(const Queue<T>& other) {
+	data = other.data;
+}
+
+//
+// = 重载, 赋值 常量
+//
+// @param other 提供赋值的变量
+//
+template<typename T>
+const Queue<T>& Queue<T>::operator=(const Queue<T>& other) const {
+	data = other.data;
 }
 
 #endif

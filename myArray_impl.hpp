@@ -127,6 +127,20 @@ T& Array<T>::operator[](int idx) {
 }
 
 //
+// [] 重载
+//
+// @param idx 查询元素的下标
+//
+// 越界元素交给编译器处理，给出适当提示
+template<typename T>
+const T& Array<T>::operator[](int idx) const {
+	if ( idx < 0 || idx >= length ) {
+		throw std::out_of_range("[Array]: Idx Out Of Range!\n");
+	}
+	return data[idx];
+}
+
+//
 // = 重载
 //
 // @param other 提供赋值的Array

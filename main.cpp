@@ -10,14 +10,16 @@ int main() {
 	};
 	
 	GList<int>ggglist = {1, {1, {1, 2}, 2, 3}, 4, {2, 1, 3, 2, {22, 11}}};
-//	cout << ggglist[3] << "\n";
-	
 	GList<int>gglist = {2, 1, 3, 5, 3};
 	GList<int>glist;
+
+	cout << ggglist.deepth() << "\n";
+
 	glist.push_back(arr[0]);
 	glist.push_back(arr[1]);
 	glist.push_back(11);
 	glist.push_back(gglist);
 	cout << glist << " ";
+
 	return 0;
 }

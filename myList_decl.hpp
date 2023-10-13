@@ -41,6 +41,9 @@ class List {
 		// 查询
 		T& operator[](int idx);
 
+ 		// 查询 常量
+ 		const T& operator[](int idx) const;
+
 		// 删除
 		void erase(int idx);
 

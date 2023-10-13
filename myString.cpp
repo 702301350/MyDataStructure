@@ -198,6 +198,19 @@ char& String::operator[](int idx) {
 	return data[idx];
 }
 
+
+//
+// [] 查询重载
+//
+// @param idx 查询下标对应的元素 常量
+//
+const char& String::operator[](int idx) const {
+	if ( idx >= length() || idx < 0 ) {
+		throw std::out_of_range("[String]: Idx Out Of Range!\n");
+	}
+	return data[idx];
+}
+
 //
 // substr 截取字符串函数
 //
