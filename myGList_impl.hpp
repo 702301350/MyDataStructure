@@ -23,14 +23,14 @@ std::ostream& operator<<(std::ostream& os,const GListNode<T>& node) {
 
 		os << "(";
 
-		int flag = 0, len = list.size();
-		for (int i = 0; i < len; i ++) {
+		int flag = 0;
+		for (GListNode<T>* x : list.getSubList()) {
 			os << ((flag) ? ",": "");
-			if ( list[i].isElement() ) {
-				os << dynamic_cast<const GListElement<T>&>(list[i]);
+			if ( x -> isElement() ) {
+				os << dynamic_cast<const GListElement<T>&>(*x);
 			}
 			else {
-				os << dynamic_cast<const GList<T>&>(list[i]);
+				os << dynamic_cast<const GList<T>&>(*x);
 			}
 			flag = 1;
 		}
@@ -40,11 +40,172 @@ std::ostream& operator<<(std::ostream& os,const GListNode<T>& node) {
 }
 
 //
+// modify 修改GListNode
+//
+// @param idx 修改下标   other 提供GListNode元素
+//
+template<typename T>
+void GListNode<T>::modify(int idx, const GListNode<T>& other) {
+	if ( isElement() ) {
+		throw std::out_of_range("[GListNode]: Element Cannot Use Modify(int, GListNode)!\n");
+	}
+	else {
+		GList<T>* thisList = dynamic_cast<GList<T>*>(this);
+
+		if ( idx < 0 || idx >= thisList -> getSubList().size() ) {
+			throw std::out_of_range("[GListNode]: Idx Out Of Range!\n");
+		}
+
+		delete thisList -> getSubList()[idx];
+		if ( other.isElement() ) {
+			thisList -> getSubList()[idx] = new GListElement<T>(dynamic_cast<const GListElement<T>&>(other));
+		}
+		else {
+			thisList -> getSubList()[idx] = new GList<T>(dynamic_cast<const GList<T>&>(other));
+		}
+	}
+}
+
+//
+// modify 修改单值
+//
+// @param idx 修改下标， val修改值
+//
+template<typename T>
+void GListNode<T>::modify(int idx, const T val) {
+	if ( isElement() ) {
+		throw std::out_of_range("[GListNode]: Element Cannot Use Modify(int, T)!\n");
+	}
+	else {
+		GList<T>* thisList = dynamic_cast<GList<T>*>(this);
+	
+		if ( idx < 0 || idx >= this -> getSubList().size() ) {
+			throw std::out_of_range("[GList]: Idx Out Of Range!\n");
+		}
+
+		delete thisList -> getSubList()[idx];
+		thisList -> getSubList()[idx] = new GListElement<T>(val);
+	}
+}
+
+//
+// [] 重载 查询第idx个广义表
+//
+// @param idx 查询下标
+//
+template<typename T>
+GListNode<T>& GListNode<T>::operator[](int idx) {
+	if ( !isElement() ) {
+		const GList<T>* list = dynamic_cast<const GList<T>*>(this);
+		if ( idx < 0 || idx >= list -> getSubList().size() ) {
+			throw std::out_of_range("[GListNode]: Idx Out Of Range!\n");
+		}
+
+		if ( list -> getSubList()[idx] -> isElement() ) {
+			return *dynamic_cast<GListElement<T>*>(list -> getSubList()[idx]);
+		}
+		else{
+			return *dynamic_cast<GList<T>*>(list -> getSubList()[idx]);
+		}
+	}
+	else {
+		return *this;
+	}
+}
+
+//
+// [] 重载 查询第idx个广义表 常量
+//
+// @param idx 查询下标
+//
+template<typename T>
+const GListNode<T>& GListNode<T>::operator[](int idx) const {
+	if ( !isElement() ) {
+		const GList<T>* list = dynamic_cast<const GList<T>*>(this);
+		if ( idx < 0 || idx >= list -> getSubList().size() ) {
+			throw std::out_of_range("[GListNode]: Idx Out Of Range!\n");
+		}
+
+		if ( list -> getSubList()[idx] -> isElement() ) {
+			return *dynamic_cast<GListElement<T>*>(list -> getSubList()[idx]);
+		}
+		else{
+			return *dynamic_cast<GList<T>*>(list -> getSubList()[idx]);
+		}
+	}
+	else {
+		return *this;
+	}
+}
+
+
+//
+// = 重载  模糊赋值
+// 
+// @param other 提供赋值的变量
+//
+// 赋值只支持同类型， 比如元素赋值元素， 广义表赋值广义表
+//
+template<typename T>
+GListNode<T>& GListNode<T>::operator=(const GListNode<T>& other) {
+	if ( this == &other ) return *this;
+
+	if ( isElement() ) {
+		GListElement<T>* thisElem = dynamic_cast<GListElement<T>*>(this);
+
+		if ( !other.isElement() ) {
+			throw std::out_of_range("[GListNode]: Cannot Give GList To An Element\n");
+		} 
+		thisElem -> modify(dynamic_cast<const GListElement<T>&>(other).data());
+		
+		return *thisElem;
+	}
+	else {
+		GList<T>* thisList = dynamic_cast<GList<T>*>(this);
+		
+		thisList -> getSubList().clear();
+		if ( other.isElement() ) {
+			GListElement<T>* tmp = new GListElement<T>(dynamic_cast<const GListElement<T>&>(other));
+			thisList -> push_back(*tmp);
+		}
+		else {
+			for (GListNode<T>* x : dynamic_cast<const GList<T>&>(other).getSubList()) {
+				thisList -> push_back(*x);
+			}
+		}
+		return *thisList;
+	}
+}
+
+//
+// = 重载  赋值常量
+// 
+// @param val 提供赋值
+//
+template<typename T>
+GListNode<T>& GListNode<T>::operator=(const T val) {
+	if ( isElement() ) {
+		GListElement<T>* thisElem = dynamic_cast<GListElement<T>*>(this);
+		thisElem -> modify(val);
+		
+		return *thisElem;
+	}
+	else {
+		GList<T>* thisList = dynamic_cast<GList<T>*>(this);
+		GListElement<T>* tmp = new GListElement<T>(val);
+		delete thisList;
+		thisList -> getSubList().push_back(tmp);
+
+		return *thisList;
+	}
+}
+
+//
 //
 //***********************************GListElement******************************************//
 
 //
-// isElement 判断是否为元素函数
+// isElement 判断是否为元素函数数
 //
 template<typename T>
 bool GListElement<T>::isElement() const {
@@ -52,33 +213,21 @@ bool GListElement<T>::isElement() const {
 }
 
 //
-// data 获取数据函数
+// modify 修改函数
+//
+// @param val 修改值
+//
+template<typename T>
+void GListElement<T>::modify(const T val) {
+	elem = val;
+}
+
+//
+// data 获取数据函数 常量
 //
 template<typename T>
 const T GListElement<T>::data() const {
 	return elem;
-}
-
-//
-// = 重载
-//
-// @param val 提供值的变量
-//
-template<typename T>
-GListElement<T>&  GListElement<T>::operator=(const T val) {
-	elem = val;
-	return *this;
-}
-
-//
-// = 重载
-//
-// @param element 提供值的GListElement元素
-//
-template<typename T>
-GListElement<T>& GListElement<T>::operator=(const GListElement<T>& other) {
-	elem = other.data();
-	return *this;
 }
 
 //
@@ -90,16 +239,22 @@ GListElement<T>& GListElement<T>::operator=(const GListElement<T>& other) {
 // 
 // @param node 初始化变量
 //
-// 该处 等号(=) 使用重载 
-//
 template<typename T>
 GList<T>::GList(const GListNode<T>& node) {
 	if ( node.isElement() ) {
-		GListElement<T>* tmp = new GListElement<T>(dynamic_cast<const GListElement<T>&>(node).data());
-		subList.push_back(tmp);
+		const GListElement<T>& element = dynamic_cast<const GListElement<T>&>(node);
+		subList.push_back(new GListElement<T>(element));
 	}
 	else {
-		subList = dynamic_cast<const GList<T>&>(node).getSubList();
+		const GList<T>& list = dynamic_cast<const GList<T>&>(node);
+		for (const GListNode<T>* x : list.getSubList()) {
+			if ( x -> isElement() ) {
+				subList.push_back(new GListElement<T>( dynamic_cast<const GListElement<T>&>(*x) ));
+			}
+			else {
+				subList.push_back(new GList<T>(*x));
+			}
+		}
 	}
 }
 
@@ -108,34 +263,9 @@ GList<T>::GList(const GListNode<T>& node) {
 //
 // @param data 插入常量值
 //
-// 该处 等号(=) 使用重载
-//
 template<typename T>
 GList<T>::GList(const T val) {
 	subList.push_back(new GListElement<T>(val));
-}
-
-//
-// 通过GList数组初始化构造函数
-//
-// @param array 提供数据的数组
-//
-template<typename T>
-GList<T>::GList(const Array<GListNode<T>*>& array) {
-	subList = array;
-}
-
-
-//
-// 通过Array数组初始化构造函数
-//
-// @param array 提供数据数组 
-//
-template<typename T>
-GList<T>::GList(const Array<T>& array) {
-	for (auto &x : array) {
-		subList.push_back(new GListElement<T>(x));		
-	}
 }
 
 //
@@ -155,82 +285,13 @@ GList<T>::GList(std::initializer_list<GList<T>> val) {
 }
 
 //
-// = 重载  模糊赋值
-// 
-// @param node 提供赋值的变量
-//
-// 通过isElement判断具体类型
-//
-template<typename T>
-GList<T>& GList<T>::operator=(const GListNode<T>& node) {
-	if ( node.isElement() ) {
-		GListElement<T>* tmp = new GListElement<T>(dynamic_cast<const GListElement<T>&>(node).data());
-		subList.clear();
-		subList.push_back(tmp);
-	}
-	else {
-		subList = dynamic_cast<const GList<T>&>(node).getSubList();
-	}
-	return *this;
-}
-
-//
-// = 重载 常量值赋值
-//
-// @param val  提供值的常量
-//
-template<typename T>
-GList<T>& GList<T>::operator=(const T val) {
-	GListElement<T>* tmp = new GListElement<T>(val);
-	subList.push_back(tmp);
-	return *this;
-}
-
-//
-// [] 重载 查询第idx个广义表
-//
-// @param idx 查询下标
-//
-template<typename T>
-GListNode<T>& GList<T>::operator[](int idx) {
-	if ( idx < 0 || idx >= subList.size() ) {
-		throw std::out_of_range("[GList]: Idx Out Of Range!\n");
-	}
-
-	if ( subList[idx] -> isElement() ) {
-		return *dynamic_cast<GListElement<T>*>(subList[idx]);
-	}
-	else{
-		return *dynamic_cast<GList<T>*>(subList[idx]);
-	}
-}
-
-//
-// [] 重载 查询第idx个广义表 常量
-//
-// @param idx 查询下标
-//
-template<typename T>
-const GListNode<T>& GList<T>::operator[](int idx) const {
-	if ( idx < 0 || idx >= subList.size() ) {
-		throw std::out_of_range("[GList]: Idx Out Of Range!\n");
-	}
-
-	if ( subList[idx] -> isElement() ) {
-		return *dynamic_cast<GListElement<T>*>(subList[idx]);
-	}
-	else{
-		return *dynamic_cast<GList<T>*>(subList[idx]);
-	}
-}
-
-//
 // isElement 判断是否为元素函数
 //
 template<typename T>
 bool GList<T>::isElement() const {
 	return false;
 }
+
 
 //
 // push_back 尾部插入函数
@@ -240,10 +301,11 @@ bool GList<T>::isElement() const {
 template<typename T>
 void GList<T>::push_back(GListNode<T>& node) {
 	if ( node.isElement() ) {
-		subList.push_back(dynamic_cast<GListElement<T>*>(&node));
+		GListElement<T>* element = new GListElement<T>(dynamic_cast<GListElement<T>&>(node));
+		subList.push_back(element);
 	}
 	else {
-		subList.push_back(dynamic_cast<GList<T>*>(&node));
+		subList.push_back(new GList<T>(node));
 	}
 }
 
@@ -255,21 +317,6 @@ void GList<T>::push_back(GListNode<T>& node) {
 template<typename T>
 void GList<T>::push_back(const T val) {
 	subList.push_back(new GListElement<T>(val));
-}
-
-//
-// push_back 尾部插入数组
-//
-// @param array 插入数组
-//
-template<typename T>
-void GList<T>::push_back(const Array<T>& array) {
-	GList<T>* tmp = new GList<T>();
-	for (const auto &x : array) {
-		GListElement<T>* element = new GListElement<T>(x);
-		tmp -> push_back(*element);
-	}
-	subList.push_back(tmp);
 }
 
 //
@@ -309,18 +356,6 @@ const GListNode<T>& GList<T>::front() const {
 }
 
 //
-// at 获取第layer层的所有广义表
-//
-// @param layer 指定层
-//
-template<typename T>
-GList<T> GList<T>::at(int layer) {
-	GList<T> tmp;
-	bfs(&tmp, layer);
-	return tmp;
-}
-
-//
 // size 获取广义表的大小
 //
 template<typename T>
@@ -329,16 +364,27 @@ const size_t GList<T>::size() const {
 }
 
 //
+// amount 获取元素个数的函数
+// 
+template<typename T>
+size_t GList<T>::amount() {
+	size_t tmp = 0;
+	return dfs(!subList.empty(), tmp);
+}
+
+//
 // deepth 获取广义表的深度
 //
 //!
 template<typename T>
 size_t GList<T>::deepth() {
-	return bfs(nullptr, MY_NOT_LIMIT);
+	size_t tmp = 0;
+	dfs(!subList.empty(), tmp);
+	return tmp;
 }
 
 //
-// getSubList 获取subList函数
+// getSubList 获取subList函数 常量
 //
 template<typename T>
 const Array<GListNode<T>*>& GList<T>::getSubList() const {
@@ -346,46 +392,36 @@ const Array<GListNode<T>*>& GList<T>::getSubList() const {
 }
 
 //
-// bfs 深度搜索
-//
-// @param list 搜索得到的广义表       layer 搜索的层数
+// getSubList 获取subList函数 常量
 //
 template<typename T>
-size_t GList<T>::bfs(GList<T>* list, int layer) {
-	size_t deep = (subList.size() != 0);
-	Queue< Array<GListNode<T>*> >q, qN;
-	
-	if ( !subList.size() ) return 0;
+Array<GListNode<T>*>& GList<T>::getSubList() {
+	return subList;
+}
 
-	q.push(subList);
-	while ( !q.empty() ) {
-		Array<GListNode<T>*> tmp = q.front();
-		q.pop();
-
-		for (GListNode<T>* &x : tmp) {
-			if ( !(x -> isElement()) ) {
-				GList<T>* ttmp = dynamic_cast<GList<T>*>(x);
-				qN.push(ttmp -> getSubList());
-			}
-
-			if ( list != nullptr && layer != MY_NOT_LIMIT ) {
-				if ( deep == layer ) {
-					list -> push_back(*x);
-				}
-				else if ( deep > layer ) {
-					return deep;
-				}
-			}
-		}
-
-		if ( !qN.empty() && q.empty() ) {
-			q = qN;
-			qN.clear();
-			deep ++;
-		}  
+//
+// dfs 深度搜索
+//
+// @param step 步数       deep 记录深度
+//
+template<typename T>
+size_t GList<T>::dfs(size_t step, size_t& deep) {
+	size_t amount = 0;
+	deep = std::max(deep, step);
+	if ( subList.size() <= 1 ) {
+		return subList.size();
 	}
 
-	return deep;	
+	for (GListNode<T>* x : subList) {
+		if ( x -> isElement() ) {
+			amount ++;
+		}
+		else {
+			amount += dynamic_cast<GList<T>*>(x) -> dfs(step + 1, deep);
+		}
+	}	
+
+	return amount;
 }
 
 #endif
