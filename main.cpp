@@ -1,11 +1,18 @@
 #include <iostream>
-#include "myList.hpp"
-#include "myArray.hpp"
-#include "myGList.hpp"
+#include "src/myList.hpp"
+#include "src/myArray.hpp"
 using namespace std;
 
 int main() {
-	GList<int>a = {1, 2, {1, 2, 3}, 4, 5}, b = {2, 3, 4, 5};
-	cout << a;
+	Array<int>a = {2, 3, 4, 5, 6};
+	List<int>b;
+
+	for (auto &x: a) {
+		b.insert(x);
+	}
+	for (int i = 0;i < b.length();i ++) {
+		cout << b[-i] << " ";
+	}
+	cout << "\n";
 	return 0;
 }
