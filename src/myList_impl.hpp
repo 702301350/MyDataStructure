@@ -101,8 +101,6 @@ List<T>& List<T>::operator=(const List<T>& other) {
 //
 template<typename T>
 void List<T>::erase(int idx) {
-	idx = idx % size;
-	
 	Node* it = find(idx);
 
 	if ( it == head ) {
