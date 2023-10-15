@@ -11,9 +11,8 @@
 //
 template<typename T>
 void List<T>::insert(T val) {
-	Node* node = new Node();
+	Node* node = new Node(val);
 	
-	node -> data = val;	
 	if ( tail == nullptr ) {
 		head = tail = node;
 		head -> next = tail;
@@ -90,6 +89,23 @@ const T& List<T>::operator[](int idx) const {
 }
 
 //
+// = 重载
+//
+// @param other 提供赋值的链表
+//
+template<typename T>
+List<T>& List<T>::operator=(const List<T>& other) {
+	if ( this != &other ) {
+		clear();
+		size_t len = other.length();
+		for (int i = 0;i < len;i ++) {
+			insert(other[i]);
+		}
+	}
+	return *this;
+}
+
+//
 // erase 删除函数
 //
 // @param idx 删除下标
@@ -129,7 +145,7 @@ void List<T>::erase(int idx) {
 // size 获取大小函数
 // 
 template<typename T>
-const int List<T>::length() {
+const int List<T>::length() const {
 	return size;
 }
 
@@ -138,12 +154,14 @@ const int List<T>::length() {
 //
 template<typename T>
 void List<T>::clear() {
-	for (Node* it = head;it != tail;) {
-		Node* tmp = it;
-		it = it -> next;
-		delete tmp;
+	if ( head != nullptr ) {
+		for (Node* it = head;it != tail;) {
+			Node* tmp = it;
+			it = it -> next;
+			delete tmp;
+		}
+		delete tail;
 	}
-	delete tail;
 
 	head = nullptr;
 	tail = nullptr;
@@ -158,7 +176,7 @@ void List<T>::clear() {
 // 对于超范围的数据(idx >= size 或者 idx < 0 ) 统一按循环模式左右查找
 //
 template<typename T>
-typename List<T>::Node* List<T>::find(int idx) {
+typename List<T>::Node* List<T>::find(int idx) const {
 	Node* it = head;
 	idx = idx % size;
 	if ( idx >= 0 ) {

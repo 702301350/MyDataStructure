@@ -11,7 +11,8 @@ class List {
 		Node* pre;
 		T data;
 
-		Node() {
+		Node(const T val) {
+			data = val;
 			next = nullptr;
 			pre = nullptr;
 		}
@@ -41,8 +42,11 @@ class List {
 		// 查询
 		T& operator[](int idx);
 
- 		// 查询 常量
+ 		// [] 重载 查询 常量
  		const T& operator[](int idx) const;
+
+ 		// = 重载 赋值
+ 		List<T>& operator=(const List<T>& other);
 
 		// 删除
 		void erase(int idx);
@@ -51,11 +55,11 @@ class List {
 		void clear();
 
 		// 输出链表大小
-		const int length();
+		const int length() const;
 
 	private:
 		// 查找对应的node
-		Node* find(int idx);
+		Node* find(int idx) const;
 };
 
 #endif
