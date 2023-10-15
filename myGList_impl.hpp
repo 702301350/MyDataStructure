@@ -51,18 +51,24 @@ void GListNode<T>::modify(int idx, const GListNode<T>& other) {
 	}
 	else {
 		GList<T>* thisList = dynamic_cast<GList<T>*>(this);
-
+		
+		if ( this == &other ) {
+			throw std::out_of_range("[GListNode]: GList Nesting Itself Is Not Allowed\n");
+			return;
+		}		
 		if ( idx < 0 || idx >= thisList -> getSubList().size() ) {
 			throw std::out_of_range("[GListNode]: Idx Out Of Range!\n");
+			return;
 		}
 
-		delete thisList -> getSubList()[idx];
+		GListNode<T>* old = thisList -> getSubList()[idx];
 		if ( other.isElement() ) {
 			thisList -> getSubList()[idx] = new GListElement<T>(dynamic_cast<const GListElement<T>&>(other));
 		}
 		else {
 			thisList -> getSubList()[idx] = new GList<T>(dynamic_cast<const GList<T>&>(other));
 		}
+		delete old;
 	}
 }
 
@@ -79,7 +85,7 @@ void GListNode<T>::modify(int idx, const T val) {
 	else {
 		GList<T>* thisList = dynamic_cast<GList<T>*>(this);
 	
-		if ( idx < 0 || idx >= this -> getSubList().size() ) {
+		if ( idx < 0 || idx >= thisList -> getSubList().size() ) {
 			throw std::out_of_range("[GList]: Idx Out Of Range!\n");
 		}
 
