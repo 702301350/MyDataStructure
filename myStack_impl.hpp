@@ -58,4 +58,26 @@ bool Stack<T>::empty() {
 	return data.empty();
 }
 
+//
+// = 重载
+//
+// @param other 提供赋值的栈
+//
+template<typename T>
+Stack<T>& Stack<T>::operator=(const Stack<T>& other) {
+	data = other.data;
+	return *this;
+}
+
+//
+// = 重载
+//
+// @param other 提供赋值的栈 常量
+//
+template<typename T>
+const Stack<T>& Stack<T>::operator=(const Stack<T>& other) const {
+	data = other.data;
+	return *this;
+}
+
 #endif

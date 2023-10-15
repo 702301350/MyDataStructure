@@ -29,6 +29,12 @@ class Stack {
 
 		// 判断栈是否为空
 		bool empty();
+
+		// 重载= 赋值
+		Stack<T>& operator=(const Stack<T>& other);
+
+		// 重载= 赋值 常量
+		const Stack<T>& operator=(const Stack<T>& other) const;
 };
 
 #endif
