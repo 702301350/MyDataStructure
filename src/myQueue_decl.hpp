@@ -10,6 +10,9 @@ class Queue {
 
 	public:
 		Queue() {}
+		Queue(const Queue<T>& other) {
+			*this = other;
+		}
 		~Queue() {
 			data.clear();
 		}

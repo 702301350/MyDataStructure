@@ -10,6 +10,9 @@ class Stack {
 
 	public:
 		Stack() {}
+		Stack(const Stack<T>& other) {
+			*this = other;
+		}
 		~Stack() {}
 
 		// 弹出栈顶

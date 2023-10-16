@@ -1,20 +1,15 @@
 #include <iostream>
 #include "src/myList.hpp"
 #include "src/myArray.hpp"
+#include "src/myQueue.hpp"
+#include "src/myQueue.hpp"
+#include "src/myStack.hpp"
 using namespace std;
 
 int main() {
-	Array<int>a = {2, 3, 4, 5, 6};
-	List<int>b;
-
-	for (auto &x: a) {
-		b.insert(x);
-	}
-
-	List<int>c = b;
-	for (int i = 0;i < c.length();i ++) {
-		cout << c[-i] << " ";
-	}
-	cout << "\n";
+	Queue<int>a;
+	a.push(1);
+	Queue<int>b = a;
+	cout << b.front();
 	return 0;
 }
