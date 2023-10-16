@@ -10,8 +10,10 @@ int main() {
 	for (auto &x: a) {
 		b.insert(x);
 	}
-	for (int i = 0;i < b.length();i ++) {
-		cout << b[-i] << " ";
+
+	List<int>c = b;
+	for (int i = 0;i < c.length();i ++) {
+		cout << c[-i] << " ";
 	}
 	cout << "\n";
 	return 0;

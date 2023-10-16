@@ -1,7 +1,0 @@
-CXX=g++
-CXXFLAGS=-std=c++11
-OBJECT=myString.o main.o
-TARGET=main.exe
-
-ALL:
-	g++ src/*.hpp src/*.cpp main.cpp -o main.exe -std=c++11
