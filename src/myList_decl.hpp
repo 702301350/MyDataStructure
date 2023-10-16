@@ -33,11 +33,7 @@ class List {
 			head = nullptr;
 			tail = nullptr;
 			size = 0;
-
-			size_t len = other.length();
-			for (int i = 0;i < len;i ++) {
-				insert(other[i]);
-			}
+			*this = other;
 		}
 		~List() {
 			clear();
