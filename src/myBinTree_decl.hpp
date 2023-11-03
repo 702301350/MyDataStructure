@@ -23,14 +23,13 @@ class BinTree {
 	struct Node {
 		String id;
 		T data;
-		Node *left, *right, *pre;
+		Node *left, *right;
 
 		Node(const T val, const String _id) {
 			id = _id;
 			data = val;
 			left  = nullptr;
 			right = nullptr;
-			pre   = nullptr;
 		}
 		~Node() {}
 	};
