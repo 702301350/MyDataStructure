@@ -83,7 +83,7 @@ String& String::operator=(const char* str) {
 //
 // @param str 待比较的字符串
 //
-bool String::operator==(const String& str) {
+bool String::operator==(const String& str) const {
 	return strcmp(data, str.data) == 0;
 }
 
@@ -92,8 +92,26 @@ bool String::operator==(const String& str) {
 //
 // @param str 带比较的常量C字符串
 //
-bool String::operator==(const char* str) {
+bool String::operator==(const char* str) const {
 	return strcmp(data, str) == 0;
+}
+
+//
+// != 判断重载
+//
+// @param str 待比较的字符串
+//
+bool String::operator!=(const String& str) const {
+	return strcmp(data, str.data) != 0;
+}
+
+//
+// == 判断重载
+//
+// @param str 带比较的常量C字符串
+//
+bool String::operator!=(const char* str) const {
+	return strcmp(data, str) != 0;
 }
 
 //
@@ -220,7 +238,7 @@ const String String::substr(int idx, int len) {
 	if ( idx >= length() || idx < 0 ) {
 		throw std::out_of_range("[String]: Idx Out Of Range!\n");
 	}
-	if ( idx + len >= length() || idx + len < 0 ) {
+	if ( idx + len > length() || idx + len < 0 ) {
 		throw std::out_of_range("[String]: Vaild Len!\n");
 	}
 

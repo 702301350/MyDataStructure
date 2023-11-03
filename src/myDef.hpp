@@ -5,6 +5,7 @@
 #include <random>
 #include <cstddef>
 #include <stdexcept>
+#include <functional>
 #include <type_traits>
 #include <initializer_list>
 

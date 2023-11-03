@@ -14,7 +14,7 @@ class String {
 		using const_iterator = const char*;
 	public:
 		String();
-		String(const char* str = nullptr);
+		String(const char* str);
 		String(const String& str);
 		String(String&& str);
 		~String();
@@ -26,10 +26,16 @@ class String {
 		String& operator=(const char* str);
 
 		// ==重载
-		bool operator==(const String& str);
+		bool operator==(const String& str) const;
 
 		// ==重载
-		bool operator==(const char* str);
+		bool operator==(const char* str) const;
+
+		// != 重载
+		bool operator!=(const String& str) const;
+
+		// ！= 重载
+		bool operator!=(const char* str) const;
 
 		// +重载，拼接
 		const String operator+(const String& str) const;
@@ -90,6 +96,16 @@ class String {
 
 		// end const 常量化获取边界
 		const_iterator end() const;
+};
+
+namespace std {
+	template<>
+	class hash<String> {
+	public:
+		size_t operator()(const String& str) const {
+			return hash<const char*>()(str.c_str());
+		}
+	};
 };
 
 #endif

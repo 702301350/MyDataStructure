@@ -1,32 +1,24 @@
 #include <iostream>
-#include "src/myQueue.hpp"
+#include "src/myBinTree.hpp"
+#include "src/myString.hpp"
+#include "src/myString.cpp"
 using namespace std;
 
 int main() {
-	int n, k, m;
-	Queue<int>q;
+	String str = "1234567";
+	Array<int>num = {5, 2, 1, 3, 7};
 
-	cin >> n >> k >> m;
-	for (int i = 1;i <= n;i ++) {
-		q.push(i);
+	BinTree<int> bin( less<int>{} );
+	for (int i = 0;i < 5;i ++) {
+		bin.insert(num[i], str.substr(0, i + 1));
 	}
 
-	while ( k -- > 1 ) { 
-		int tmp = q.front();
-		 q.pop();
-		 q.push(tmp);
+	Array<int>a = bin.traverse(PRECO);
+	for (auto &x : a) {
+		cout << x << " ";
 	}
-	int idx = 1;
-	while ( !q.empty() ) {
-		int tmp = q.front();
-		q.pop();
-		if ( idx == m ) {
-			idx = 1;
-			cout << tmp << ((q.size()) ? "," : "");
-			continue;
-		}
-		q.push(tmp);
-		idx ++;
-	}
+	cout << "\n";
+
+	cout << bin.isFull() << " " << bin.isComplete() << " " << bin.deepth() << " " << bin.size() << "\n";
 	return 0;
 }
