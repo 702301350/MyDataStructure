@@ -36,7 +36,7 @@ void List<T>::insert(T val) {
 template<typename T>
 void List<T>::insert(T val, int idx) {
 	if ( idx < 0 || idx > size ) {
-		std::cout << "Index Out Of Range!\n";
+		std::cout << "[List]: Index Out Of Range!\n";
 		return;
 	}
 
@@ -55,6 +55,14 @@ void List<T>::insert(T val, int idx) {
 
 	if ( front == tail ) head = node;
 	size ++;
+}
+
+//
+// empty 判断是否为空函数
+//
+template<typename T>
+bool List<T>::empty() const {
+	return size == 0;
 }
 
 //

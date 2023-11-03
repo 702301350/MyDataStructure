@@ -1,15 +1,32 @@
 #include <iostream>
-#include "src/myList.hpp"
-#include "src/myArray.hpp"
 #include "src/myQueue.hpp"
-#include "src/myQueue.hpp"
-#include "src/myStack.hpp"
 using namespace std;
 
 int main() {
-	Queue<int>a;
-	a.push(1);
-	Queue<int>b = a;
-	cout << b.front();
+	int n, k, m;
+	Queue<int>q;
+
+	cin >> n >> k >> m;
+	for (int i = 1;i <= n;i ++) {
+		q.push(i);
+	}
+
+	while ( k -- > 1 ) { 
+		int tmp = q.front();
+		 q.pop();
+		 q.push(tmp);
+	}
+	int idx = 1;
+	while ( !q.empty() ) {
+		int tmp = q.front();
+		q.pop();
+		if ( idx == m ) {
+			idx = 1;
+			cout << tmp << ((q.size()) ? "," : "");
+			continue;
+		}
+		q.push(tmp);
+		idx ++;
+	}
 	return 0;
 }

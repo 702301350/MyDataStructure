@@ -45,6 +45,9 @@ class List {
 		// 指定位置插入
 		void insert(T val, int idx);
 
+		// 是否为空
+		bool empty() const;
+
 		// 查询
 		T& operator[](int idx);
 

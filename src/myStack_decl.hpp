@@ -2,6 +2,7 @@
 #define MYSTACK_DECL_HPP_
 
 #include "myArray.hpp"
+#include "myList.hpp"
 
 template<typename T>
 class Stack {

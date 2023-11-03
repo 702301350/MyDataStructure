@@ -69,7 +69,7 @@ Array<T>::Array(std::initializer_list<T> val) {
 template<typename T>
 void Array<T>::erase(int idx) {
 	if ( idx >= length || idx < 0 ) {
-		throw std::out_of_range("[Array]: Idx Out Of Range!\n");
+		throw std::out_of_range("[Array]: Erase Idx Out Of Range!\n");
 	}
 	else {
 		T* tmp = new T [length - 1];
@@ -94,7 +94,7 @@ void Array<T>::erase(int idx) {
 template<typename T>
 void Array<T>::erase(Array<T>::iterator it) {
 	if ( it == end() ) {
-		throw std::out_of_range("[Array]: Iterator Out Of Range");
+		throw std::out_of_range("[Array]: Erase Iterator Out Of Range");
 	}
 	else {
 		T* tmp = new T [length - 1];
@@ -121,7 +121,7 @@ void Array<T>::erase(Array<T>::iterator it) {
 template<typename T>
 T& Array<T>::operator[](int idx) {
 	if ( idx < 0 || idx >= length ) {
-		throw std::out_of_range("[Array]: Idx Out Of Range!\n");
+		throw std::out_of_range("[Array]: [] Idx Out Of Range!\n");
 	}
 	return data[idx];
 }
@@ -135,7 +135,7 @@ T& Array<T>::operator[](int idx) {
 template<typename T>
 const T& Array<T>::operator[](int idx) const {
 	if ( idx < 0 || idx >= length ) {
-		throw std::out_of_range("[Array]: Idx Out Of Range!\n");
+		throw std::out_of_range("[Array]: Const [] Idx Out Of Range!\n");
 	}
 	return data[idx];
 }
