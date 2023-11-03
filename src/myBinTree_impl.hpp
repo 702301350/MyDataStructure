@@ -149,11 +149,6 @@ template<typename T>
 void BinTree<T>::delSubTree(const String _id) {
 	Node *now = find(_id);
 	if ( now != nullptr ) {
-		//删除整棵树
-		if ( now == root ) {
-			root = nullptr;
-		}
-
 		//遍历删除结点
 		std::function<void (Node*)>func;
 		func = [&](Node* ptr) {
@@ -162,11 +157,16 @@ void BinTree<T>::delSubTree(const String _id) {
 			func(ptr -> left);
 			func(ptr -> right);
 
-			hashMap.erase(ptr -> id);
-			delete ptr;
+			if ( ptr != now ) {
+				hashMap.erase(ptr -> id);
+				delete ptr;
+			}
 		};
 
 		func(now);
+		
+		now -> left = nullptr;
+		now -> right = nullptr;
 	}
 	else {
 		throw std::out_of_range("[BinTree]: Cannot Erase A Undeclared Id.");		
@@ -314,11 +314,11 @@ const size_t BinTree<T>::deepth() const {
 //
 template<typename T>
 typename BinTree<T>::Node* BinTree<T>::find(const String _id) const {
-	Node *ptr = root, *res = nullptr;
+	Node *now = root, *res = nullptr;
 
 	//遍历查找结点
 	std::function<Node* (Node*)>func;
-	func = [&](Node* ptr) {
+	func = [&](Node* ptr) -> Node* {
 		if ( ptr == nullptr ) { 
 			return nullptr;
 		}
@@ -326,11 +326,13 @@ typename BinTree<T>::Node* BinTree<T>::find(const String _id) const {
 			return ptr;
 		} 
 
-		return func(ptr -> left);
+		Node* t = func(ptr -> left);
+		if ( t != nullptr ) return t;
+
 		return func(ptr -> right);
 	};
 
-	return func(ptr);
+	return func(now);
 }
 
 //

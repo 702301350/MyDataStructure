@@ -1,7 +1,7 @@
 #include <iostream>
 #include "src/myBinTree.hpp"
-#include "src/myString.hpp"
-#include "src/myString.cpp"
+//#include "src/myString.hpp"
+//#include "src/myString.cpp"
 using namespace std;
 
 bool func(int a, int b) {
@@ -17,6 +17,7 @@ int main() {
 		bin.insert(num[i], str.substr(0, i + 1));
 	}
 
+	bin.delSubTree("12");
 	Array<int>a = bin.traverse(PRECO);
 	for (auto &x : a) {
 		cout << x << " ";
