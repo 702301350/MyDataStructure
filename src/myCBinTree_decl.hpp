@@ -1,5 +1,5 @@
-#ifndef MYBINTREE_DECL_HPP_
-#define MYBINTREE_DECL_HPP_
+#ifndef MYCBINTREE_DECL_HPP_
+#define MYCBINTREE_DECL_HPP_
 
 #include "myDef.hpp"
 #include "myString.hpp"
@@ -8,8 +8,19 @@
 
 #include <unordered_set>
 
+/*
+
+CBinTree 普通二叉树，
+
+使用时需要先初始化根结点, 根结点编号默认 root
+插入方式采用插入在已知结点的左右边，使用一个
+set进行编码映射，可以针对已知编号的结点进行修
+改，删除子树等
+
+*/
+
 template<typename T>
-class BinTree {
+class CBinTree {
 	//遍历顺序
 	#define PRECO   0
 	#define MIDO    1
@@ -23,57 +34,56 @@ class BinTree {
 	struct Node {
 		String id;
 		T data;
-		Node *left, *right;
+		Node* left, * right;
 
 		Node(const T val, const String _id) {
 			id = _id;
 			data = val;
-			left  = nullptr;
+			left = nullptr;
 			right = nullptr;
 		}
 		~Node() {}
 	};
 
 	private:
-		std::function<bool(T, T)> compare;   //储存规则
 		std::unordered_set<String>hashMap;   //储存编号，防止重复
-	public:
-		Node*  root;                         //根节点
 
-		BinTree(std::function<bool(T, T)> cmp) {
+	public:
+		Node* root;
+
+		CBinTree() {
 			root = nullptr;
-			compare = cmp;
 		}
-		~BinTree() {
+		~CBinTree() {
 			clear();
 		}
 
 		// 清空二叉树
 		void clear();
 
-		// 判断是否为空
+		// 是否为空
 		bool empty() const;
 
-		// 遍历，返回遍历数组
-		Array<T> traverse(int mode);
+		// 初始化根节点
+		void initRoot(const T val);
 
-		// 按照规则插入
-		void insert(const T val, const String _id);
+		// 插入元素
+		void insert(const String _pa, int side, const T val, const String _id);
+
+		// 遍历 二叉树
+		Array<T> traverse(int mode);
 
 		// 查找是否存在
 		bool has(const T val) const;
 
-		// 通过id获取数据
-		T& get(const String _id) const;
-
-		// 删除对应编号的结点
-		void erase(const String _id);
-
 		// 删除对应编号结点及以下的子树
 		void delSubTree(const String _id);
 
-		// 二叉树合并
-		void merge(BinTree* tree);
+		// 通过id修改值
+		void modify(const String _id, const T val);
+
+		// 通过id获取数据
+		T get(const String _id) const;
 
 		// 判断是否为满二叉树
 		bool isFull() const;
@@ -88,7 +98,7 @@ class BinTree {
 		const size_t size() const;
 
 	private:
-		// 通过id查找
+		// 查询元素
 		Node* find(const String _id) const;
 
 		//先序遍历
@@ -96,7 +106,7 @@ class BinTree {
 
 		//中序遍历
 		void mid_traverse(Node* node, Array<T>& arr);
-		
+
 		// 后序遍历
 		void aft_traverse(Node* node, Array<T>& arr);
 };

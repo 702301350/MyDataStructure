@@ -1,29 +1,27 @@
+#include "src/myBBinTree.hpp"
 #include <iostream>
-#include "src/myBinTree.hpp"
-//#include "src/myString.hpp"
-//#include "src/myString.cpp"
 using namespace std;
 
-bool func(int a, int b) {
-	return true;
-}
-
 int main() {
-	String str = "1234567";
-	Array<int>num = {5, 2, 1, 3, 7};
-
-	BinTree<int> bin( func );
-	for (int i = 0;i < 5;i ++) {
-		bin.insert(num[i], str.substr(0, i + 1));
+	BBinTree<int>tree(greater<int>{});
+	BBinTree<int>tree2(less<int>{});
+	Array<int>arr = { 2, 4, 1, 3, 5, 6, 5, 6, 1 };
+	for (int x : arr) {
+		tree.insert(x);
 	}
 
-	bin.delSubTree("12");
-	Array<int>a = bin.traverse(PRECO);
-	for (auto &x : a) {
+	tree.merge(tree2);
+	Array<int>res = tree.traverse(PRECO);
+	for (int x : res) {
 		cout << x << " ";
 	}
 	cout << "\n";
+	cout << tree.has(6) << "\n";
 
-	cout << bin.isFull() << " " << bin.isComplete() << " " << bin.deepth() << " " << bin.size() << "\n";
+	res = tree.traverse(PRECO);
+	for (int x : res) {
+		cout << x << " ";
+	}
+
 	return 0;
 }

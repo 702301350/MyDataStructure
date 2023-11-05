@@ -119,14 +119,14 @@ bool String::operator!=(const char* str) const {
 //
 // @param str 待拼接字符串
 const String String::operator+(const String& str) const {
-	int len_this = length(), len_str = str.length();
-	int len = len_this + len_str;
+	size_t len_this = length(), len_str = str.length();
+	size_t len = len_this + len_str;
 	char* tmp = new char[len + 1];
 
-	for (int i = 0; i < len_this ;i ++) {
+	for (size_t i = 0; i < len_this ;i ++) {
 		tmp[i] = data[i];
 	}
-	for (int j = 0, i = len_this; j < len_str ;j ++) {
+	for (size_t j = 0, i = len_this; j < len_str ;j ++) {
 		tmp[i + j] = str.data[j];
 	}
 
@@ -140,14 +140,14 @@ const String String::operator+(const String& str) const {
 // @param str 待拼接常量C字符串
 //
 const String String::operator+(const char* str) const {
-	int len_this = length(), len_c = strlen(str);
-	int len = len_this + len_c;
+	size_t len_this = length(), len_c = strlen(str);
+	size_t len = len_this + len_c;
 	char* tmp = new char[len + 1];
 	
-	for (int i = 0; i < len_this ;i ++) {
+	for (size_t i = 0; i < len_this ;i ++) {
 		tmp[i] = data[i];
 	}
-	for (int j = 0, i = len_this; j < len_c ;j ++) {
+	for (size_t j = 0, i = len_this; j < len_c ;j ++) {
 		tmp[i + j] = str[j];
 	}
 
@@ -161,15 +161,15 @@ const String String::operator+(const char* str) const {
 // @param str 待拼接字符串
 //
 String& String::operator+=(const String& str) {
-	int len_this = length(), len_str = str.length();
-	int len = len_this + len_str;
+	size_t len_this = length(), len_str = str.length();
+	size_t len = len_this + len_str;
 
 	char* tmp = new char[len + 1];
 
-	for (int i = 0;i < len_this;i ++) {
+	for (size_t i = 0;i < len_this;i ++) {
 		tmp[i] = data[i];
 	}
-	for (int j = 0, i = len_this;j < len_str;j ++) {
+	for (size_t j = 0, i = len_this;j < len_str;j ++) {
 		tmp[i + j] = str.data[j];
 	}
 
@@ -186,14 +186,14 @@ String& String::operator+=(const String& str) {
 // @param str 待拼接常量C字符串
 //
 String& String::operator+=(const char* str) {
-	int len_this = length(), len_c = strlen(str);
-	int len = len_this + len_c;
+	size_t len_this = length(), len_c = strlen(str);
+	size_t len = len_this + len_c;
 	char* tmp = new char[len + 1];
 
-	for (int i = 0;i < len_this;i ++) {
+	for (size_t i = 0;i < len_this;i ++) {
 		tmp[i] = data[i];
 	}
-	for (int j = 0, i = len_this;j < len_c;j ++) {
+	for (size_t j = 0, i = len_this;j < len_c;j ++) {
 		tmp[i + j] = str[j];
 	}
 
@@ -285,8 +285,8 @@ void String::erase(int idx, int len) {
 		throw std::out_of_range("[String]: Vaild Len!\n");
 	}
 	
-	int len_this = length();	
-	int n = len_this - len;
+	size_t len_this = length();	
+	size_t n = len_this - len;
 	char* tmp = new char[n + 1];
 
 	for (int i = 0, j = 0;j < len_this;j ++) {
