@@ -1,27 +1,15 @@
-#include "src/myBBinTree.hpp"
 #include <iostream>
-using namespace std;
+#include "src/myCBinTree.hpp"
+#include "src/myString.cpp"
+using namespace std	;
 
 int main() {
-	BBinTree<int>tree(greater<int>{});
-	BBinTree<int>tree2(less<int>{});
-	Array<int>arr = { 2, 4, 1, 3, 5, 6, 5, 6, 1 };
-	for (int x : arr) {
-		tree.insert(x);
-	}
+	Array<int>a = {10, 25, 40, 50, 65, 75, 80}, b = {10, 40, 25, 65, 80, 75, 50};
+	CBinTree<int>tree(a, MIDO, b, AFTERO);
 
-	tree.merge(tree2);
-	Array<int>res = tree.traverse(PRECO);
-	for (int x : res) {
+	Array<int>c = tree.traverse(PRECO);
+	for (auto &x : c) {
 		cout << x << " ";
-	}
-	cout << "\n";
-	cout << tree.has(6) << "\n";
-
-	res = tree.traverse(PRECO);
-	for (int x : res) {
-		cout << x << " ";
-	}
-
+	} 
 	return 0;
 }

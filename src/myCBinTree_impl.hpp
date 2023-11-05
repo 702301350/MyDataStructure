@@ -4,6 +4,40 @@
 #include "myCBinTree_decl.hpp"
 
 //
+// CBinTree 逆向构造函数
+//
+// @param arr 已知二叉树各结点值     mode 是以 PRECO 先序
+//                                           MIDO  中序
+//                                           AFTRO 后序  形式表现的
+template<typename T>
+CBinTree<T>::CBinTree(Array<T>& seq1, int mode1, Array<T>& seq2, int mode2) {
+	// 已知先序和中序
+	if ( mode1 == PRECO && mode2 == MIDO ) {
+		std::unordered_map<T, size_t> mid_map;
+		
+		for (int i = 0;i < seq2.size();i ++) {
+			mid_map[ seq2[i] ] = i;
+		}
+
+		root = treeBuilder(seq1, 0, seq1.size() - 1, seq2, 0, seq2.size() - 1, mid_map);
+	}
+	// 已知中序和后序
+	else if ( mode1 == MIDO && mode2 == AFTERO ) {
+		std::unordered_map<T, size_t> mid_map;
+
+		for (int i = 0;i < seq1.size();i ++) {
+			mid_map[ seq1[i] ] = i;
+		}
+
+		long ed = seq2.size() - 1;
+		root = treeBuilder(seq1, 0, seq1.size() - 1, seq2, ed, mid_map);
+	}
+	else {
+		throw std::out_of_range("[CBinTree]: Invalid Pattern Combination!");
+	}
+}
+
+//
 // clear 清空二叉树函数
 //
 template<typename T>
@@ -362,5 +396,53 @@ void CBinTree<T>::aft_traverse(typename CBinTree<T>::Node* node, Array<T>& arr) 
 	arr.push_back(node -> data);
 }
 
+//
+// treeBuilderPM 通过先序和中序构建二叉树的函数
+//
+// @param pre 先序数组   pre_st 先序起   pre_ed 先序终   mid 中序   mid_st 中序起   mid_ed 中序终  mid_hash 映射哈希表
+//
+template<typename T>
+typename CBinTree<T>::Node* CBinTree<T>::treeBuilder(Array<T>& pre, size_t pre_st, size_t pre_ed, Array<T>& mid, size_t mid_st, size_t mid_ed, std::unordered_map<T, size_t>& mid_hash) {
+	static long long cnt = 1;
+    if ( pre_st > pre_ed || mid_st > mid_ed ) {
+        return nullptr;
+    }
+
+	T val = pre[pre_st];
+	
+	Node* node = new Node(val, (empty()) ? "root" : String::toString(cnt ++));
+
+	size_t idx  = mid_hash[val];
+    size_t left = idx - mid_st;
+
+    node -> left  = treeBuilder(pre, pre_st + 1, pre_st + left, mid, mid_st, idx - 1, mid_hash);
+    node -> right = treeBuilder(pre, pre_st + left + 1, pre_ed, mid, idx + 1, mid_ed, mid_hash);
+
+    return node;
+}
+
+//
+// treeBuilderPM 通过先序和中序构建二叉树的函数
+//
+// @param pre 先序数组   pre_st 先序起   pre_ed 先序终   mid 中序   mid_st 中序起   mid_ed 中序终  mid_hash 映射哈希表
+//
+template<typename T>
+typename CBinTree<T>::Node* CBinTree<T>::treeBuilder(Array<T>& mid, size_t mid_st, size_t mid_ed, Array<T>& aft, long& aft_ed, std::unordered_map<T, size_t>& mid_hash) {
+	static long long cnt = 1;
+    if ( mid_st > mid_ed || aft_ed < 0 ) {
+        return nullptr;
+    }
+
+	T val = aft[aft_ed];
+	
+	Node* node = new Node(val, (empty()) ? "root" : String::toString(cnt ++));
+	
+	size_t idx = mid_hash[val];
+	aft_ed --;
+
+	node -> right = treeBuilder(mid, idx + 1, mid_ed, aft, aft_ed, mid_hash);
+	node -> left  = treeBuilder(mid, mid_st, idx - 1, aft, aft_ed, mid_hash);
+	return node;
+}
 
 #endif

@@ -156,6 +156,24 @@ const String String::operator+(const char* str) const {
 }
 
 //
+// + 拼接重载
+//
+// @param ch 待拼接常量C字符串
+//
+const String String::operator+(const char ch) const {
+	size_t len = length();
+	char* tmp = new char[len + 2];
+	
+	for (size_t i = 0; i < len; i ++) {
+		tmp[i] = data[i];
+	}
+
+	tmp[len] = ch;
+	tmp[len + 1] = '\0';
+	return String(tmp);
+}
+
+//
 // += 拼接重载
 //
 // @param str 待拼接字符串
@@ -201,6 +219,28 @@ String& String::operator+=(const char* str) {
 
 	delete [] data;
 	data = tmp;
+	return *this;
+}
+
+//
+// += 拼接重载
+//
+// @param ch 待拼接常量C字符串
+//
+String& String::operator+=(const char ch) {
+	size_t len = length();
+	char* tmp = new char[len + 2];
+	
+	for (size_t i = 0; i < len; i ++) {
+		tmp[i] = data[i];
+	}
+
+	tmp[len] = ch;
+	tmp[len + 1] = '\0';
+	
+	delete [] data;
+	data = tmp;
+
 	return *this;
 }
 
@@ -301,6 +341,26 @@ void String::erase(int idx, int len) {
 }
 
 //
+// addFront 添加字符到字符串前面
+// 
+// @param ch 插入字符
+//
+void String::addFront(const char ch) {
+	size_t len = length();
+	char* tmp = new char[len + 2];
+	
+	for (size_t i = 1; i <= len; i ++) {
+		tmp[i] = data[i - 1];
+	}
+
+	tmp[0] = ch;
+	tmp[len + 1] = '\0';
+	
+	delete [] data;
+	data = tmp;
+}
+
+//
 // c_str 获取C字符串
 //
 const char* String::c_str() const {
@@ -340,4 +400,24 @@ String::iterator String::end() {
 //
 String::const_iterator String::end() const {
 	return data + length();
+}
+
+//
+// 
+//
+String String::toString(long long num) {
+	String res = "";
+	long long abs_num = std::abs(num);
+	
+	if ( !abs_num ) { 
+		return "0";
+	}
+
+	while ( abs_num ) {
+		res.addFront(abs_num % 10 + '0');
+		abs_num /= 10;
+	}
+
+	if ( num < 0 ) res.addFront('-');
+	return res;
 }

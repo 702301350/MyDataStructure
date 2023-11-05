@@ -43,11 +43,17 @@ class String {
 		// +重载，拼接
 		const String operator+(const char* str) const;
 
+		// + 重载，拼接
+		const String operator+(const char ch) const;
+
 		// +=重载，拼接
 		String& operator+=(const String& str);
 
 		// += 重载，拼接
 		String& operator+=(const char* str);
+
+		// += 重载，拼接
+		String& operator+=(const char ch);
 
 		// << 重载输出
 		friend std::ostream& operator<<(std::ostream& os, const String& str) {
@@ -85,6 +91,9 @@ class String {
 		//删除字符串
 		void erase(int idx, int len);
 
+		//插入一个字符到字符串前面
+		void addFront(const char ch);
+
 		// begin 获取第一个元素值
 		iterator begin();
 
@@ -96,6 +105,9 @@ class String {
 
 		// end const 常量化获取边界
 		const_iterator end() const;
+
+		// 数字转String
+		static String toString(long long num);
 };
 
 namespace std {

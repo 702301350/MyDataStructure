@@ -7,6 +7,7 @@
 #include "myQueue.hpp"
 
 #include <unordered_set>
+#include <unordered_map>
 
 /*
 
@@ -51,6 +52,7 @@ class CBinTree {
 	public:
 		Node* root;
 
+		CBinTree(Array<T>& seq1, int mode1, Array<T>& seq2, int mode2);
 		CBinTree() {
 			root = nullptr;
 		}
@@ -100,6 +102,12 @@ class CBinTree {
 	private:
 		// 查询元素
 		Node* find(const String _id) const;
+
+		// 通过先序和中序构建树
+		Node* treeBuilder(Array<T>& pre, size_t pre_st, size_t pre_ed, Array<T>& mid, size_t mid_st, size_t mid_ed, std::unordered_map<T, size_t>& mid_hash);
+
+		// 通过中序和后序构建树
+		Node* treeBuilder(Array<T>& mid, size_t mid_st, size_t mid_ed, Array<T>& aft, long& aft_ed, std::unordered_map<T, size_t>& mid_hash);
 
 		//先序遍历
 		void pre_traverse(Node* node, Array<T>& arr);
