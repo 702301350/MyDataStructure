@@ -282,7 +282,7 @@ void BBinTree<T>::mid_traverse(typename BBinTree<T>::Node* node, Array<T>& arr) 
 }
 
 //
-// aft_traverse 中序遍历
+// aft_traverse 后序遍历
 //
 // @param node 遍历的二叉树 arr 输出的遍历数组
 //
