@@ -1,15 +1,28 @@
 #include <iostream>
-#include "src/myCBinTree.hpp"
+#include "src/myHuffmTree.hpp"
 #include "src/myString.cpp"
-using namespace std	;
+#include <unordered_map>
+using namespace std;
+
+unordered_map<char, size_t>hashMap = {
+	{'a', 5}, {'b', 9}, {'c', 12}, {'d', 13}, {'e', 16}, {'f', 45}
+};
 
 int main() {
-	Array<int>a = {10, 25, 40, 50, 65, 75, 80}, b = {10, 40, 25, 65, 80, 75, 50};
-	CBinTree<int>tree(a, MIDO, b, AFTERO);
+	HuffmTree<char>huff(hashMap);
 
-	Array<int>c = tree.traverse(PRECO);
-	for (auto &x : c) {
-		cout << x << " ";
-	} 
+	unordered_map<char, String> table = huff.exportTable();
+	for (auto &x : table) {
+		cout << x.first << " " << x.second << "\n";
+	}
+
+	String s = huff.exportHuff({'a', 'b', 'c', 'd', 'e', 'f'});
+	cout << s << "\n";
+
+	Array<char> arr = huff.explain(s);
+
+	for (auto x : arr) {
+		cout << x;
+	}
 	return 0;
 }

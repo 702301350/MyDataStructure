@@ -33,7 +33,7 @@ class BBinTree {
 	//结点
 	struct Node {
 		T data;
-		Node* left, * right;
+		Node *left, *right;
 
 		Node(const T val) {
 			data = val;

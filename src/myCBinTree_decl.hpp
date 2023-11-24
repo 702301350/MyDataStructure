@@ -47,7 +47,8 @@ class CBinTree {
 	};
 
 	private:
-		std::unordered_set<String>hashMap;   //储存编号，防止重复
+		//储存编号，防止重复
+		std::unordered_set<String>hashMap;
 
 	public:
 		Node* root;

@@ -217,6 +217,16 @@ void Array<T>::push_back(T val) {
 }
 
 //
+// pop_back 删除尾部元素函数
+//
+template<typename T>
+void Array<T>::pop_back() {
+	if ( !empty() ) {
+		erase(size() - 1);
+	}
+}
+
+//
 // size 返回数组大小函数
 //
 template<typename T>
@@ -228,7 +238,7 @@ const size_t Array<T>::size() const {
 // empty 返回数组是否为空函数
 //
 template<typename T>
-bool Array<T>::empty() {
+bool Array<T>::empty() const {
 	return length == 0;
 }
 

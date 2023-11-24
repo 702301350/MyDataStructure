@@ -43,6 +43,9 @@ class Array {
 		// 插入元素到尾部
 		void push_back(T val);
 
+		// 删除最后一个元素
+		void pop_back();
+
 		// 插入元素到下标为idx的位置
 		void insert(T val, int idx);
 
@@ -50,7 +53,7 @@ class Array {
 		const size_t size() const;
 
 		// 返回数组是否为空
-		bool empty();
+		bool empty() const;
 
 		// 清空数组
 		void clear();
