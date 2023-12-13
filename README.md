@@ -60,7 +60,7 @@ Here's the way to use these containers.
 
 * List
 
-  * initalize it by:
+  * initialize it by:
     * List<T>a(other)                       generate a new List by other list.
   * insert an element:
     * a.insert(val);
@@ -73,7 +73,7 @@ Here's the way to use these containers.
 
 * Stack 
 
-  * initalize it by:
+  * initialize it by:
     * Stack<T>a(other);                   generate a new Stack by other stack.
   * insert an element:
     * a.push(val);
@@ -86,7 +86,7 @@ Here's the way to use these containers.
 
 * Queue
 
-  * initalize it by:
+  * initialize it by:
     * Queue<T>a(other);               generate a new Queue by other queue.
   * insert an element:
     * a.push(val);
@@ -99,7 +99,7 @@ Here's the way to use these containers.
 
 * String
 
-  * initalize it by:
+  * initialize it by:
     * String a = "ABCD";              generate a new String like C++ string.
     * String a = other;                 generate a new String by other.
     * String a("ABCD");               generate a new String by ()
@@ -119,7 +119,7 @@ Here's the way to use these containers.
 
 * CBinTree
 
-  * initalize it by:
+  * initialize it by:
     * initRoot(root);                                                                         generate a new Binary Tree by init root.
     * CBinTree<T>a(seq1, mode1, seq2, mode2);                     generate a new Binary Tree by two Array and two mode.
       * Use pre-order and mid-order to build a binary tree:    CBinTree<T>a(seq1, PRECO, seq2, MIDO);
@@ -138,7 +138,7 @@ Here's the way to use these containers.
 
 * BBinTree
 
-  * initalize it by:
+  * initialize it by:
     * BBinTree<T>a(comparer);                                                     generate a new binary search tree by a compare function; 
   * insert an element:
     * a.insert(value);
@@ -161,7 +161,7 @@ Here's the way to use these containers.
 
 * HuffmTree
 
-  * initalize it by:
+  * initialize it by:
     * HuffmTree<T>a(data)                      generate a new HuffmTree by an Array.
     * HuffmTree<T>a(frqc);                      generate a new HuffmTree by a frequence map table, frqc is  `map<T, size_t>`.
   * export the huffman code:
