@@ -195,3 +195,9 @@ The Problem folders will be updated soon.
 I'm a fresh man, some code may be not less than satisfactory, I will repair it after.
 
 If you can feedback bugs or provide a better way to optimize these algorithms, I would be appreciated it a lot.
+
+
+
+**Have A Nice Day~**
+
+![9A6855D6DEAC6AE9D610EB5243F3E0D8.jpg](https://s2.loli.net/2023/12/13/ADlLyGKNZTeHX7R.jpg)
