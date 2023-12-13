@@ -24,7 +24,7 @@ Here's some DS tools I wrote:
 
 | Container                       | Name         | Head File       | Iterator    | Can Use Index |
 | ------------------------------- | ------------ | --------------- | ----------- | ------------- |
-| Array (数组)                    | array<T>     | myArray.hpp     | support     | support       |
+| Array (数组)                    | Array<T>     | myArray.hpp     | support     | support       |
 | List (链表)                     | List<T>      | myList.hpp      | not support | support       |
 | Stack (栈)                      | Stack<T>     | myStack.hpp     | not support | not support   |
 | Queue (队列)                    | Queue<T>     | myQueue.hpp     | not support | not support   |
