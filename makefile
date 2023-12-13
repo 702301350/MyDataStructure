@@ -4,4 +4,4 @@ OBJECT=myString.o main.o
 TARGET=main.exe
 
 ALL:
-	${CXX} src/*.hpp src/*.cpp main.cpp -o ${TARGET} ${CXXFLAGS}
+	${CXX} src/*.cpp main.cpp -I ./src/ -o ${TARGET} ${CXXFLAGS}
